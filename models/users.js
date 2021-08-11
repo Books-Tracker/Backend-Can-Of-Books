@@ -9,15 +9,15 @@ const mongoose = require ('mongoose');
 // `title`, `description`, `status`, and `email` (of the user that added the Book).
 
 const bookSchema= new mongoose.Schema({
-  title:{ type: String, unique: true },
-  description:{ type: String, unique: true },
-  img:{ type: String, unique: true },
-  status:{ type: String, unique: true },
+  title:{ type: String},
+  description:{ type: String},
+  img:{ type: String},
+  status:{ type: String},
 });
 
 
 const userSchema=new mongoose.Schema({
-  email:{ type: String, unique: true },
+  email:{ type: String},
   bookSchema:[bookSchema]
 });
 const UserModel =mongoose.model('user', userSchema);
