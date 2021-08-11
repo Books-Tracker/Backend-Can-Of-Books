@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 
 
-// const MONGO_DB_URL = process.env.MONGO_DB_URL;
+const MONGO_DB_URL = process.env.MONGO_DB_URL;
 const mongoose = require ('mongoose');
 
 
@@ -63,8 +63,7 @@ app.get('/verify-token', (request, response) => {
 //==================================================
 // connects the mongoose with mongo DB
 //mongo will create a data base once data is added
-mongoose.connect(`mongodb://localhost:27017/books`, { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.set('useCreateIndex', true);
+mongoose.connect(`${MONGO_DB_URL}/books`, { useNewUrlParser: true, useUnifiedTopology: true });
 //===================================================
 
 //requiring the scheme and the model into your server
@@ -110,11 +109,11 @@ const seedUsersCollection = () => {
   }
 
 };
-// seedUsersCollection();
+//seedUsersCollection();
 
 
 
-const getbooks = async (req, res) => {
+const getbooks = (req, res) => {
   const { email } = req.query; // we are getting the email from the query parameter
 
   // Using the model, we are going to either use the find or findOne Method to get the data from the DB
