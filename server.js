@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 
 
-// const MONGO_DB_URL = process.env.MONGO_DB_URL;
+const MONGO_DB_URL = process.env.MONGO_DB_URL;
 const mongoose = require ('mongoose');
 
 
@@ -63,7 +63,7 @@ app.get('/verify-token', (request, response) => {
 //==================================================
 // connects the mongoose with mongo DB
 //mongo will create a data base once data is added
-mongoose.connect(`mongodb://localhost:27017/books`, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(`${MONGO_DB_URL}/books`, { useNewUrlParser: true, useUnifiedTopology: true });
 //===================================================
 
 //requiring the scheme and the model into your server
@@ -109,7 +109,7 @@ const seedUsersCollection = () => {
   }
 
 };
-seedUsersCollection();
+//seedUsersCollection();
 
 
 
@@ -123,7 +123,7 @@ const getbooks = (req, res) => {
     if (user === null) {
       res.send('no data was found');
     } else {
-      res.json(user[0].books);
+      res.json(user.books);
     }
   });
 
