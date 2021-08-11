@@ -64,6 +64,7 @@ app.get('/verify-token', (request, response) => {
 // connects the mongoose with mongo DB
 //mongo will create a data base once data is added
 mongoose.connect(`mongodb://localhost:27017/books`, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.set('useCreateIndex', true);
 //===================================================
 
 //requiring the scheme and the model into your server
@@ -109,11 +110,11 @@ const seedUsersCollection = () => {
   }
 
 };
-seedUsersCollection();
+// seedUsersCollection();
 
 
 
-const getbooks = (req, res) => {
+const getbooks = async (req, res) => {
   const { email } = req.query; // we are getting the email from the query parameter
 
   // Using the model, we are going to either use the find or findOne Method to get the data from the DB
@@ -123,7 +124,7 @@ const getbooks = (req, res) => {
     if (user === null) {
       res.send('no data was found');
     } else {
-      res.json(user[0].books);
+      res.json(user.books);
     }
   });
 
