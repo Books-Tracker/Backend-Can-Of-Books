@@ -109,7 +109,7 @@ const seedUsersCollection = () => {
   }
 
 };
-//seedUsersCollection();
+// seedUsersCollection();
 
 
 
@@ -128,13 +128,60 @@ const getbooks = (req, res) => {
   });
 
 };
-//create a /book route
+//create a /books route
 
-app.get('/books',(getbooks));
+app.get('/books', getbooks);
+app.post('/addBooks', addBooksHandler);
+app.delete('/deleteBook/:index', deleteBooks);
+app.put('/updateBook/:index', updateBooks);
 
+function addBooksHandler(req, res) {
+  const { title, description, img,status, email } = req.body;
 
+  UserModel.find({ email: email }, (error, userData) => {
+    if (error) {
+      res.send('did not work');
+    } else {
+      userData[0].books.push({
+        title,
+        description,
+        img,
+        status,
+      });
+      userData[0].save();
+      res.send(userData[0].books);
+    }
+  });
+}
 
+function deleteBooks(req, res) {
+  const { email } = req.query;
+  const index = Number(req.params.index);
+  UserModel.find({ email: email }, (error, userData) => {
+    const newBookArr = userData[0].books.filter((book, idx) => {
+      if (idx !== index) {
+        return book;
+      }
+    });
+    userData[0].books = newBookArr;
+    userData[0].save();
+    res.send(userData[0].books);
+  });
+}
 
-
+function updateBooks(req, res) {
+  const { title, description, img,status, email } = req.body;
+  const index = Number(req.params.index);
+  UserModel.findOne({ email: email }, (error, userData) => {
+    userData.books[index] = {
+      title,
+      description,
+      img,
+      status,
+    };
+    userData.save();
+    res.send(userData.books);
+  });
+}
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`));

@@ -20,7 +20,7 @@ const userSchema=new mongoose.Schema({
   email:{ type: String, unique: true },
   books:[bookSchema]
 });
-const UserModel =mongoose.model('user', userSchema);
+const UserModel =mongoose.model('users', userSchema);
 
 //Use your schema to craft a Book model.
 
